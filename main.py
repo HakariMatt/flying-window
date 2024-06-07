@@ -1,11 +1,13 @@
 from tkinter import Tk
 from time import sleep
 import random
+import sys
 
 window = Tk()
 
 window.title('Bounce')
 window.geometry('200x200')
+window.bind("<Escape>", lambda x: window.destroy())
 
 WIDTH, HEIGHT = 1920, 1080
 SCALE = 1.25  # CHANGE THIS TO YOUR SCREEN SCALE (Mine is 125%)
