@@ -13,9 +13,10 @@ window.bind("<Escape>", lambda x: window.destroy())
 WIDTH, HEIGHT = 1920, 1080
 SCALE = 1.25  # CHANGE THIS TO YOUR SCREEN SCALE (Mine is 125%)
 WINDOW_SIZE = 200
-WINDOW_SIZE_SCALED = WINDOW_SIZE * SCALE
+WINDOW_SIZE_SCALED = int(WINDOW_SIZE * SCALE)
 FPS = 60
-TB = 48
+TASK_BAR = 48
+TITLE_BAR = 32
 COLORS = ['orchid2', 'pink', 'yellow1', 'green1', 'turquoise1', 'SteelBlue2']
 PICS_R = [
     Image.open('img/0R.png').resize((WINDOW_SIZE, WINDOW_SIZE)),
@@ -52,10 +53,11 @@ if __name__ == "__main__":
             velx *= -1
 
             # window['bg'] = random.choice(COLORS)
+            print(window.winfo_x()+WINDOW_SIZE)
             img = chose_img(velx)
             panel.config(image=img)
 
-        if y*SCALE + WINDOW_SIZE_SCALED >= HEIGHT - TB*SCALE or y <= 0:
+        if (y*SCALE + WINDOW_SIZE_SCALED + TITLE_BAR*SCALE) >= HEIGHT - TASK_BAR*SCALE or y <= 0:
             # window['bg'] = random.choice(COLORS)
             img = chose_img(velx)
             panel.config(image=img)
