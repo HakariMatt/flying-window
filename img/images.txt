@@ -1,5 +1,0 @@
-Add your images to this directory:
-0L.png
-1L.png
-0R.png
-1R.png
