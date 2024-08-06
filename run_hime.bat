@@ -49,4 +49,4 @@ start /B python main.py --resolution %resolution% --scale %scale%
 start /B python main.py --resolution %resolution% --scale %scale% --super
 
 endlocal
-pause
+exit

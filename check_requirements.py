@@ -20,11 +20,11 @@ def check_and_install_requirements(requirements_file):
         print("Missing packages:")
         for pkg in missing_packages:
             print(pkg)
-        do_installation = input('Do you want to install missing modules? [Y/n] ').upper()
-        if do_installation == 'Y':
+        do_installation = input('Do you want to install missing packages? [Y/n] ').upper()
+        if do_installation == 'Y' or do_installation == 'YES' or do_installation == '':
             print("Installing missing packages...")
             subprocess.check_call([sys.executable, '-m', 'pip', 'install', *missing_packages])
-        elif do_installation == 'N':
+        elif do_installation == 'N' or do_installation == 'NO':
             print('Cancelling...')
             exit(1)
         else:
