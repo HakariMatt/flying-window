@@ -1,5 +1,5 @@
 @echo off
-setlocal 
+setlocal enabledelayedexpansion
 
 :: Check if Python is installed
 python --version >nul 2>&1
@@ -30,8 +30,14 @@ if errorlevel 1 (
 echo.
 echo.
 
-set /p resolution=Your screen resolution (e.g. 1920x1080): 
-set /p scale=Your UI scale (e.g. 1.25 if it's 125%%): 
+set "default_resolution=1920x1080"
+set "default_scale=1"
+
+set /p resolution="Your screen resolution (default: 1920x1080): "
+set /p scale="Your UI scale (default: 1): "
+
+if "!resolution!"=="" set "resolution=%default_resolution%"
+if "!scale!"=="" set "scale=%default_scale%"
 
 echo Welcome to Himeverse!
 start /B python main.py --resolution %resolution% --scale %scale%
@@ -43,4 +49,4 @@ start /B python main.py --resolution %resolution% --scale %scale%
 start /B python main.py --resolution %resolution% --scale %scale% --super
 
 endlocal
-exit
+pause
