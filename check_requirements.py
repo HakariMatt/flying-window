@@ -24,6 +24,7 @@ def check_and_install_requirements(requirements_file):
         if do_installation == 'Y' or do_installation == 'YES' or do_installation == '':
             print("Installing missing packages...")
             subprocess.check_call([sys.executable, '-m', 'pip', 'install', *missing_packages])
+            print('\n\n')
         elif do_installation == 'N' or do_installation == 'NO':
             print('Cancelling...')
             exit(1)
@@ -31,7 +32,8 @@ def check_and_install_requirements(requirements_file):
             print('Invalid input...')
             exit(2)
     else:
-        print("All packages are installed.")
+        # print("All packages are installed.")
+        pass
 
 if __name__ == "__main__":
     requirements_file = 'requirements.txt'

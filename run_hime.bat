@@ -27,26 +27,25 @@ if errorlevel 1 (
     )
 )
 
-echo.
-echo.
-
-set "default_resolution=1920x1080"
-set "default_scale=1"
-
-set /p resolution="Your screen resolution (default: 1920x1080): "
-set /p scale="Your UI scale (default: 1): "
-
-if "!resolution!"=="" set "resolution=%default_resolution%"
-if "!scale!"=="" set "scale=%default_scale%"
-
 echo Welcome to Himeverse!
-start /B python main.py --resolution %resolution% --scale %scale%
-start /B python main.py --resolution %resolution% --scale %scale%
-start /B python main.py --resolution %resolution% --scale %scale%
-start /B python main.py --resolution %resolution% --scale %scale%
-start /B python main.py --resolution %resolution% --scale %scale%
-start /B python main.py --resolution %resolution% --scale %scale%
-start /B python main.py --resolution %resolution% --scale %scale% --super
+echo.
+goto loop
+
+:loop
+	set input=" "
+	set /p input=How many Himes do you want?  
+
+	echo %input%|findstr "^[0-9]*$">nul
+	if %errorlevel%==0 (
+		for /L %%i in (1,1,%input%) do (
+			start /B python main.py
+		)
+		echo as you wish, %input% Hime appeared!
+	) else (
+		start /B python main.py
+		echo you have not enter a number, but Hime appeared!
+	)
+	goto loop
 
 endlocal
 exit

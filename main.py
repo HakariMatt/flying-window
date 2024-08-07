@@ -1,21 +1,12 @@
+import ctypes
+from win32api import GetSystemMetrics
 from tkinter import Tk, Label
 from time import sleep
 import random
 from PIL import Image, ImageTk
-import argparse
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame.mixer as pmixer
-
-
-parser = argparse.ArgumentParser()
-parser.add_argument('--resolution', type=str, required=True,
-                    help='Screen resolution in the format WIDTHxHEIGHT (e.g., 1920x1080)')
-parser.add_argument('--scale', type=float, default=1.0,
-                    help='UI scale (e.g., 1.0, 1.25, 2.0)')
-parser.add_argument('--super', action='store_true',
-                    help='Enable Super Hime')
-args = parser.parse_args()
 
 
 window = Tk()
@@ -23,22 +14,24 @@ pmixer.init()
 
 
 window.title('Hime')
+window.overrideredirect(True)
+window.wm_attributes('-transparentcolor', 'magenta')
+window.wm_attributes('-topmost', 1)
 window.geometry('200x200')
 window.resizable(False, False)
-window.bind("<Escape>", lambda x: window.destroy())
 
 
 # constants 
-WIDTH, HEIGHT = map(int, args.resolution.split('x'))
-SCALE = args.scale
+SCALE = ctypes.windll.shcore.GetScaleFactorForDevice(0) / 100
+WIDTH, HEIGHT = GetSystemMetrics(0)*SCALE, GetSystemMetrics(1)*SCALE
 VOLUME = 0.5
-IS_SUPER = args.super
+IS_SUPER = random.random() < 0.05
 MOVE_SPD = 4 if IS_SUPER else random.randint(1, 2)
 WINDOW_SIZE = 200
 WINDOW_SIZE_SCALED = int(WINDOW_SIZE * SCALE)
 FPS = 60
 TASK_BAR = 48
-TITLE_BAR = 32
+TITLE_BAR = 0 # 32
 PICS_R = [
     Image.open('img/0R.png').resize((WINDOW_SIZE, WINDOW_SIZE)),
     Image.open('img/1R.png').resize((WINDOW_SIZE, WINDOW_SIZE))
@@ -71,8 +64,14 @@ SOUNDS = [
 ]
 
 
+def on_click(event): 
+    global running
+    running = False
+    window.destroy()
+
+
 def change_pos(x, y):
-    window.geometry(f'+{int(x/SCALE)-8}+{int(y/SCALE)}')
+    window.geometry(f'+{int(x/SCALE)}+{int(y/SCALE)}')
 
 
 def random_choice_no_repeat(options, last_choice):
@@ -101,8 +100,9 @@ if __name__ == "__main__":
 
     last_img = chose_img(velx, None, IS_SUPER)
     img = ImageTk.PhotoImage(last_img)
-    panel = Label(window, image=img)
+    panel = Label(window, image=img, bg='magenta')
     panel.pack(side="bottom", fill="both", expand="yes")
+    panel.bind("<Button-1>", on_click)
     
     running = True
     while running:
